@@ -12,18 +12,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, '../client')));
 
 // testing if the SQL server is connected
-// const model = require('../server/model/model');
-// app.get('/api', async (req, res) => {
-//   console.log('testing if SQL server is connected');
-//   try {
-//     const results = await model.query(
-//       'SELECT * FROM information_schema.tables'
-//     );
-//     res.json(results);
-//   } catch (err) {
-//     console.log(err);
-//   }
-// });
+const model = require('../server/model/model');
+app.get('/api', async (req, res) => {
+  console.log('testing if SQL server is connected');
+  try {
+    const results = await model.query(
+      'SELECT * FROM '
+    );
+    res.json(results);
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 // catch-all route handler
 app.use((req, res) =>
