@@ -1,15 +1,18 @@
 import React from 'react';
-import {Routes, Route, Link } from 'react-router-dom' ;
+import {Routes, Route, Link, BrowserRouter } from 'react-router-dom' ;
 import NavBar from './NavBar';
 import PostsContainer from './PostsContainer';
-import Footer from './Footer';
+import Login from './Login';
 
-const App = () => (
-  <div>
+const App = () => {
+  return (
+  <BrowserRouter>
     <NavBar />
-    <PostsContainer />
-    <Footer />
-  </div>
-)
+    <Routes>
+    <Route path="/" element={<PostsContainer />} />
+    <Route path="/login" element={<Login />} />
+    </Routes>
+  </BrowserRouter>
+)}
 
 export default App;
