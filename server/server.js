@@ -1,7 +1,8 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
-const apiRouter = require('./routes/apiRouter');
+const userRouter = require('./routes/userRouter');
+const postRouter = require('./routes/postRouter');
 
 dotenv.config({ path: path.resolve(__dirname, '../config.env') });
 
@@ -14,7 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 // ask terry if we need this line
 // app.use(express.static(path.resolve(__dirname, '../client')));
 
-app.use('/api', apiRouter);
+app.use('/user', userRouter);
+app.use('/post', postRouter);
 
 // catch-all route handler
 app.use((req, res) =>

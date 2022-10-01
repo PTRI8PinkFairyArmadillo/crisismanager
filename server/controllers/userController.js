@@ -67,4 +67,23 @@ controller.updateUser = async (req, res, next) => {
   }
 };
 
+//middleware for user authentication
+controller.verifyUser = async (req, res, next) => {
+  try {
+    const { username, password } = req.body;
+    const values = [username];
+    const queryText = `SELECT * FROM user_info WHERE username=$1`;
+    const verifiedUser = await db.query(queryText, values);
+
+    if (!verifiedUser.rows[0]) return res.status(400).send('User not found');
+    if (verifiedUser.rows[0].password === password) return next();
+    else return res.status(200).send('Wrong password');
+  } catch (err) {
+    return next({
+      log: 'Error in verifyUser, ' + err,
+      status: 400,
+      message: { err: 'Error in verifyUser' },
+    });
+  }
+};
 module.exports = controller;
