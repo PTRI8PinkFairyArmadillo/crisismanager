@@ -14,7 +14,7 @@ const NavBar = () => (
           <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-          <a class="nav-link" href="#">Log In</a>
+          <Link class="nav-link" to="/login">Log In</Link>
         </li>
       </ul>
       <form class="d-flex" role="search">
