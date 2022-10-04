@@ -1,34 +1,35 @@
-const db = require('../models/model');
+const db = require("../models/model");
 
 const postController = {};
 
-// controller.newPost = async (req, res, next) => {
-//   try {
-//     const date = new Date();
-//     const currentDate =
-//       date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-//     const { location, event, name, quantity, type, donation } = req.body;
-//     const itemValues = [name, quantity, type];
-//     const postValues = [currentDate, location, event, donation];
-//     //use JWT to get user_id
-//         //maybe create a middleware to verify the user and get user_id
-//     const queryTextItemInfo =
-//       'INSERT INTO item_info (name, quantity, type) VALUES ($1, $2, $3) RETURNING *';
-//     const queryTextPostInfo =
-//       'INSERT INTO post_info (date, location, event, donation, claimed) VALUES ($1, $2, $3, $4, false) RETURNING *';
-
-//     // first add item info to the database
-//     const newItem = await db.query(queryTextItemInfo, itemValues);
-//     const newPost = await db.query(queryTextPostInfo, postValues);
-//     res.locals.newUser = newUser.rows;
-//     return next();
-//   } catch (err) {
-//     return next({
-//       log: 'Error in newPost: ' + err,
-//       status: 400,
-//       message: { err: 'An error occured in new post' },
-//     });
-//   }
-// };
+postController.newPost = async (req, res, next) => {
+  try {
+    console.log("in newPost");
+    const date = new Date();
+    const currentDate =
+      date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+    const { location, event, donation } = req.body;
+    //use JWT to get user_id
+    //maybe create a middleware to verify the user and get user_id
+    console.log(res.locals.verifiedUser);
+    const userID = res.locals.verifiedUser.id;
+    console.log("User id: ", res.locals.verifiedUser.id);
+    const itemID = res.locals.newItem.id;
+    const postValues = [currentDate, location, event, donation, itemID, userID];
+    console.log(res.locals.newItem);
+    const queryTextPostInfo =
+      "INSERT INTO post_info (date, location, event, donation, item_id, user_id, claimed) VALUES ($1, $2, $3, $4, $5, $6, false) RETURNING *";
+    const newPost = await db.query(queryTextPostInfo, postValues);
+    res.locals.newPost = newPost.rows;
+    console.log("newPost: ", res.locals.newPost);
+    return next();
+  } catch (err) {
+    return next({
+      log: "Error in newPost: " + err,
+      status: 400,
+      message: { err: "An error occured in new post" },
+    });
+  }
+};
 
 module.exports = postController;

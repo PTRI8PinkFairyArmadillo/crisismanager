@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const userRouter = require('./routes/userRouter');
 const postRouter = require('./routes/postRouter');
+const itemRouter = require('./routes/itemRouter');
 
 dotenv.config({ path: path.resolve(__dirname, '../config.env') });
 
@@ -12,11 +13,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ask terry if we need this line
-// app.use(express.static(path.resolve(__dirname, '../client')));
-
 app.use('/user', userRouter);
 app.use('/post', postRouter);
+app.use('/item', itemRouter);
 
 // catch-all route handler
 app.use((req, res) =>
