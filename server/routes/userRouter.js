@@ -4,6 +4,10 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 router.get('/', userController.getAllUserInfo, (req, res) => {
+  res.status(200).json(res.locals.userInfo);
+});
+
+router.get('/:id', userController.getUserInfo, (req, res) => {
   res.status(200).json(res.locals.userData);
 });
 
