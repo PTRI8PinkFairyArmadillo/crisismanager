@@ -42,7 +42,7 @@ module.exports = {
       publicPath: '/build',
     },
     proxy: {
-      '/api': 'http://localhost:3000',
+      '/post': 'http://localhost:3000',
     },
   },
 };
