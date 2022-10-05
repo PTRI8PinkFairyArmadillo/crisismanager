@@ -1,12 +1,32 @@
-const express = require("express");
-const postController = require("../controllers/postController");
-const itemController = require("../controllers/itemController");
-const userController = require("../controllers/userController");
+const express = require('express');
+const postController = require('../controllers/postController');
+const itemController = require('../controllers/itemController');
+const userController = require('../controllers/userController');
 
 const router = express.Router();
 
-router.post("/", itemController.newItem, (req, res) => {
+router.get('/', itemController.getAllItems, (req, res) => {
+  res.status(200).json(res.locals.allItems);
+});
+
+router.get('/:id', itemController.getItem, (req, res) => {
+  res.status(200).json(res.locals.itemData);
+});
+
+router.post('/', itemController.newItem, (req, res) => {
   return res.status(200).json(res.locals.newItem);
+});
+
+// router.delete('/', itemController.deleteAllItem, (req, res) => {
+//   res.status(200).send('All items deleted');
+// });
+
+router.delete('/:id', itemController.deleteItem, (req, res) => {
+  res.status(200).send('Item deleted');
+});
+
+router.put('/:id', itemController.updateItem, (req, res) => {
+  res.status(200).send('Item updated');
 });
 
 module.exports = router;
