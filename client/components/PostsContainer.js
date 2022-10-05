@@ -1,10 +1,11 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {Routes, Route, Link } from 'react-router-dom' ;
 import Post from './Post';
 import Footer from './Footer';
 import { GlobalContext } from '../context/GlobalState';
 import AddButton from './AddButton';
 import NewPost from './NewPost';
+
 
 const PostsContainer = () => {
   // const [postsList, setList] = useState([
@@ -19,10 +20,15 @@ const PostsContainer = () => {
   
   // useEffect hook?
 
-  const { posts } = useContext(GlobalContext); //array of posts from the state
+  const { posts, getPosts } = useContext(GlobalContext); //array of posts from the state
+  useEffect(() => {
+    getPosts();
+  }, []);
+  
   const postsList = []; // array of post components
   posts.forEach((el, i) => {
-      postsList.push(<Post key={i} row={i}  name={posts[i].name} location={posts[i].location} type={posts[i].type} quantity={posts[i].quantity} description={posts[i].description} />)
+    postsList.push(<Post key={i} postID={posts[i].id} event={posts[i].event} name={posts[i].name} quantity={posts[i].quantity} type={posts[i].type} location={posts[i].location} user={posts[i].username} description={posts[i].description} />)
+      // postsList.push(<Post key={i} row={i}  name={posts[i].name} location={posts[i].location} type={posts[i].type} quantity={posts[i].quantity} description={posts[i].description} />)
     })
 
 return (
