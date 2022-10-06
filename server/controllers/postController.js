@@ -11,10 +11,11 @@ controller.newPost = async (req, res, next) => {
     const { location, event, donation, description } = req.body;
     //use JWT to get user_id
     //maybe create a middleware to verify the user and get user_id
-    console.log(res.locals.verifiedUser);
-
-    const userID = res.locals.verifiedUser.id;
-    console.log('User id: ', res.locals.verifiedUser.id);
+    // console.log(res.locals.verifiedUser);
+    
+    // const userID = res.locals.verifiedUser.id;
+    // console.log('User id: ', res.locals.verifiedUser.id);
+    const userID = 11;
     const itemID = res.locals.newItem.id;
     const postValues = [
       currentDate,

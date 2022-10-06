@@ -32,17 +32,47 @@ export const GlobalProvider = ({ children }) => {
     }
   }
   
-  function addPost(post) {
-    dispatch({
-      type: 'ADD_POST',
-      payload: post
+  async function addPost(post) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    try {
+      const res = await axios.post('/post', post, config)
+      console.log(res)
+      dispatch({
+        type: 'ADD_POST',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+      type: 'POST_ERROR',
+      payload: err.response.data.error
     })
+  }
+  }
+
+  async function deletePost(id) {
+    try {
+      await axios.delete(`/post/${id}`)
+      dispatch({
+        type: 'DELETE_POSTS',
+        payload: id
+      })
+    } catch (err) {
+      dispatch({
+        type: 'POST_ERROR',
+        payload: err.response.data.error
+      })
+    }
   }
 
   return (<GlobalContext.Provider value={{
     posts: state.posts,
     addPost,
-    getPosts
+    getPosts,
+    deletePost
   }}>
     {children}
   </GlobalContext.Provider>);

@@ -8,6 +8,7 @@ const NewPost = () => {
   const [type, setType] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [description, setDescription] = useState('');
+  const [isDonation, setDonationStat] = useState(false);
 
   const { addPost } = useContext(GlobalContext);
 
@@ -20,14 +21,20 @@ const NewPost = () => {
   const onSubmit = e => {
     e.preventDefault();
     // what does this do exactly?
-
+    // donation should take value of checkbox
+    // console.log('what is checkbox value', e.target.donationCheckbox.value);
+    // const donation = e.target.donationCheckbox.value ? true : false;
     const newPost = {
+      event: "TBD",
       name,
       location,
       type,
       quantity,
-      description}
-
+      description,
+      donation: false
+    }
+      console.log(newPost);
+      
       addPost(newPost);
       routeChange();
   }
@@ -57,6 +64,14 @@ const NewPost = () => {
       <div class="input-group">
         <span class="input-group-text">Description</span>
         <textarea class="form-control" value={description} onChange={(e) => setDescription(e.target.value)} aria-label="description"></textarea>
+      </div>
+
+      <div class="form-check">
+        <input type="hidden" name="donationCheckbox" value="false" />
+        <input class="form-check-input" type="checkbox" value="true" id="flexCheckDefault" name="donationCheckbox"/>
+        <label class="form-check-label" for="flexCheckDefault">
+          Donation?
+        </label>
       </div>
 
       <div class="container col text-center">

@@ -3,12 +3,17 @@ export default (state, action) => {
     case 'ADD_POST':
       return {
         ...state,
-        posts: [...state.posts, action.payload]
+        // posts: [...state.posts, action.payload]
       }
     case 'GET_POSTS':
       return {
         ...state,
         posts: action.payload
+      }
+    case 'DELETE_POST':
+      return {
+        ...state,
+        posts: state.posts.filter(post => post.id !== action.payload)
       }
     case 'POST_ERROR':
       return {

@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Routes, Route, Link } from 'react-router-dom' ;
+import { GlobalContext } from '../context/GlobalState';
 
 const Post = (props) => {
+  const { deletePost } = useContext(GlobalContext);
   const { name, location, type, quantity, user, postID, description, event} = props;
   return (
     // <div>In the Post</div>
@@ -14,8 +16,8 @@ const Post = (props) => {
         <h6 class="card-subtitle mb-2 text-muted">Quantity: {quantity}</h6>
         <h6 class="card-subtitle mb-2 text-muted">Created By: {user}</h6>
         <p class="card-text">Description: {description}</p>
-        <a href="#" class="card-link">Edit</a>
-        <a href="#" class="card-link">Delete</a>
+        <a class="card-link">Edit</a>
+        <Link to="/" class="card-link" onClick={() => deletePost(postID)}>Delete</Link>
       </div>
     </div>
   )};
