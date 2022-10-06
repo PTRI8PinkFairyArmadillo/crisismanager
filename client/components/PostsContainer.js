@@ -20,7 +20,7 @@ const PostsContainer = () => {
   
   // useEffect hook?
 
-  const { posts, getPosts } = useContext(GlobalContext); //array of posts from the state
+  const { posts, getPosts} = useContext(GlobalContext); //array of posts from the state
   useEffect(() => {
     getPosts();
   }, []);

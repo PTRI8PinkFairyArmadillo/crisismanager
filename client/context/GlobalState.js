@@ -53,13 +53,12 @@ export const GlobalProvider = ({ children }) => {
   }
   }
 
-  async function deletePost() {
+  async function deletePost(id) {
     try {
-      const res = await axios.delete('/post')
-      console.log(res);
+      await axios.delete(`/post/${id}`)
       dispatch({
-        type: 'GET_POSTS',
-        payload: res.data
+        type: 'DELETE_POSTS',
+        payload: id
       })
     } catch (err) {
       dispatch({
@@ -72,7 +71,8 @@ export const GlobalProvider = ({ children }) => {
   return (<GlobalContext.Provider value={{
     posts: state.posts,
     addPost,
-    getPosts
+    getPosts,
+    deletePost
   }}>
     {children}
   </GlobalContext.Provider>);
