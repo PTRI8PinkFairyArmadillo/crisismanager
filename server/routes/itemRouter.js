@@ -17,11 +17,11 @@ router.post('/', itemController.newItem, (req, res) => {
   return res.status(200).json(res.locals.newItem);
 });
 
-// router.delete('/', itemController.deleteAllItem, (req, res) => {
-//   res.status(200).send('All items deleted');
-// });
+router.delete('/', itemController.deleteAllItems, (req, res) => {
+  res.status(200).json(res.locals.allItems);
+});
 
-router.delete('/:id', itemController.deleteItem, (req, res) => {
+router.delete('/:id', itemController.deleteItemOLD, (req, res) => {
   res.status(200).send('Item deleted');
 });
 
