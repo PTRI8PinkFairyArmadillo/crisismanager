@@ -58,10 +58,31 @@ controller.getItem = async (req, res, next) => {
   }
 };
 
-controller.deleteItem = async (req, res, next) => {
+//delete single item without deleting post
+controller.deleteItemOLD = async (req, res, next) => {
   try {
     const { id } = req.params;
     const queryText = `DELETE FROM item_info WHERE id=${id}`;
+    const deletedItem = await db.query(queryText);
+    if (deletedItem.rowCount === 0) {
+      console.log('Item does not exist');
+      return res.status(400).send('Item does not exist');
+    }
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in deleteItem: ' + err,
+      status: 400,
+      message: { err: 'Error in deleting item' },
+    });
+  }
+};
+
+//part of delete post chain, also deletes the item_info
+controller.deleteItem = async (req, res, next) => {
+  try {
+    const id = res.locals.deletedPost.item_id;
+    const queryText = `DELETE FROM item_info WHERE id=${id} RETURNING *`;
     const deletedItem = await db.query(queryText);
     if (deletedItem.rowCount === 0) {
       console.log('Item does not exist');
@@ -99,8 +120,9 @@ controller.updateItem = async (req, res, next) => {
 
 controller.deleteAllItems = async (req, res, next) => {
   try {
-    const queryText = `DELETE FROM item_info`;
+    const queryText = `DELETE FROM item_info RETURNING *`;
     const deletedAllItems = await db.query(queryText);
+    res.locals.allItems = deletedAllItems.rows;
     return next();
   } catch (err) {
     return next({
