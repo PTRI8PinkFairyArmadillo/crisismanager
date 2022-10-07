@@ -40,6 +40,7 @@ export const GlobalProvider = ({ children }) => {
     }
     try {
       const res = await axios.post('/post', post, config)
+      getPosts() // useEffect is not properly working so manually run the getPosts() again
       console.log(res)
       dispatch({
         type: 'ADD_POST',
@@ -56,6 +57,7 @@ export const GlobalProvider = ({ children }) => {
   async function deletePost(id) {
     try {
       await axios.delete(`/post/${id}`)
+      getPosts(); // useEffect is not properly working so manually run the getPosts() again
       dispatch({
         type: 'DELETE_POSTS',
         payload: id
@@ -68,11 +70,56 @@ export const GlobalProvider = ({ children }) => {
     }
   }
 
+  async function updatePost(id) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    try {
+      const res = await axios.put(`/post/${id}`)
+      getPosts(); // useEffect is not properly working so manually run the getPosts() again
+      console.log(res)
+      dispatch({
+        type: 'UPDATE_POST',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'POST_ERROR',
+        payload: err.response.data.error
+      })
+    }
+  }
+
+  async function addUser(user) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    try {
+      const res = await axios.post('/user', user, config)
+      console.log(res)
+      dispatch({
+        type: 'ADD_USER',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+      type: 'POST_ERROR',
+      payload: err.response.data.error
+    })
+  }
+  }
+
   return (<GlobalContext.Provider value={{
     posts: state.posts,
     addPost,
     getPosts,
-    deletePost
+    deletePost,
+    updatePost,
+    addUser
   }}>
     {children}
   </GlobalContext.Provider>);

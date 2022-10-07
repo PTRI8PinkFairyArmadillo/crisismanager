@@ -47,7 +47,8 @@ controller.getAllPosts = async (req, res, next) => {
     const queryText = `SELECT a.*, b.name, b.quantity, b.type, c.username 
                         FROM post_info as a 
                         LEFT JOIN item_info as b ON a.item_id = b.id 
-                        LEFT JOIN user_info as c ON a.user_id = c.id`;
+                        LEFT JOIN user_info as c ON a.user_id = c.id
+                        where claimed = false`;
 
     const allPosts = await db.query(queryText);
     res.locals.allPosts = allPosts.rows;
@@ -80,6 +81,25 @@ controller.getPost = async (req, res, next) => {
     });
   }
 };
+
+controller.updatePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const queryText = `UPDATE post_info SET claimed=true WHERE id=${id}`;
+    const updatedPost = await db.query(queryText);
+    if (updatedPost.rowCount === 0) {
+      return res.status(400).send('Post does not exist');
+    }
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in postController.updatePost: ' + err,
+      status: 400,
+      message: { err: 'Error in updating postController.updatePost' },
+    });
+  }
+};
+
 
 controller.deletePost = async (req, res, next) => {
   try {
