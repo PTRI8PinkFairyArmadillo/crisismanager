@@ -1,27 +1,46 @@
-import React from "react";
-import { Routes, Route, Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { GlobalContext } from "../context/GlobalState";
 
-const Login = () => (
-  <div class="container">
-    <form class="row g-3">
-      <div class="col-md-6">
-        <label for="inputEmail4" class="form-label">
-          Email
-        </label>
-        <input type="email" class="form-control" id="inputEmail4"></input>
-      </div>
-      <div class="col-md-6">
-        <label for="inputPassword4" class="form-label">
-          Password
-        </label>
-        <input type="password" class="form-control" id="inputPassword4"></input>
-      </div>
-      <div class="col-12">
-        <button type="submit" class="btn btn-primary">
-          Sign in
-        </button>
-      </div>
-    </form>
-  </div>
-);
+
+
+const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const { verifyUser } = useContext(GlobalContext);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const userInput = {
+      username,
+      password,
+    }; 
+    console.log(userInput);
+    verifyUser(userInput);
+  };
+
+  return(
+    <div class="container">
+      <form class="row g-3" onSubmit={onSubmit}>
+        <div class="col-md-6">
+          <label class="form-label">
+            Username
+          </label>
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} class="form-control" id="inputEmail4"></input>
+        </div>
+        <div class="col-md-6">
+          <label  class="form-label">
+            Password
+          </label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} class="form-control" id="inputPassword4"></input>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">
+            Log in
+          </button>
+        </div>
+      </form>
+    </div>
+  )
+};
+
 export default Login;

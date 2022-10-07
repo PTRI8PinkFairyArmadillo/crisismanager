@@ -23,7 +23,7 @@ const PostsContainer = () => {
   const { posts, getPosts} = useContext(GlobalContext); //array of posts from the state
   useEffect(() => {
     getPosts();
-  }, [posts]);
+  }, []);
   
   const postsList = []; // array of post components
   posts.forEach((el, i) => {
