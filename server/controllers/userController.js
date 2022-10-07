@@ -3,9 +3,17 @@ const db = require('../models/model');
 const controller = {};
 
 controller.getAllUserInfo = async (req, res, next) => {
-  const queryText = 'SELECT * FROM user_info';
+  const queryText = `SELECT * FROM user_info`;
+  const userInfo = await db.query(queryText);
+  res.locals.userInfo = userInfo.rows;
+  return next();
+};
+
+controller.getUserInfo = async (req, res, next) => {
+  const { id } = req.params;
+  const queryText = `SELECT * FROM user_info WHERE id=${id}`;
   const userData = await db.query(queryText);
-  res.locals.userData = userData.rows;
+  res.locals.userData = userData.rows[0];
   return next();
 };
 
@@ -16,7 +24,11 @@ controller.createNewUser = async (req, res, next) => {
     const queryText =
       'INSERT INTO user_info (username, password, email, name) VALUES ($1, $2, $3, $4) RETURNING *';
     const newUser = await db.query(queryText, values);
-    res.locals.newUser = newUser.rows;
+    res.locals.newUser = newUser.rows[0];
+    console.log(
+      'file: userController.js ~ line 20 ~ res.locals.newUser',
+      res.locals.newUser
+    );
     return next();
   } catch (err) {
     return next({
@@ -69,12 +81,14 @@ controller.updateUser = async (req, res, next) => {
 
 //middleware for user authentication
 controller.verifyUser = async (req, res, next) => {
+  console.log('in verify user');
+
   try {
     const { username, password } = req.body;
     const values = [username];
     const queryText = `SELECT * FROM user_info WHERE username=$1`;
     const verifiedUser = await db.query(queryText, values);
-
+    res.locals.verifiedUser = verifiedUser.rows[0];
     if (!verifiedUser.rows[0]) return res.status(400).send('User not found');
     if (verifiedUser.rows[0].password === password) return next();
     else return res.status(200).send('Wrong password');
