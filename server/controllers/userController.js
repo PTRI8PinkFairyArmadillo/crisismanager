@@ -82,21 +82,37 @@ controller.updateUser = async (req, res, next) => {
 
 //middleware for user authentication
 controller.verifyUser = async (req, res, next) => {
+  console.log('cookies', req.cookies.user_id);
   console.log('in verify user');
   try {
     const { username, password } = req.body;
-    const values = [username];
-    const queryText = `SELECT * FROM user_info WHERE username=$1`;
-    const verifiedUser = await db.query(queryText, values);
-    console.log('verified user data: ', verifiedUser.rows[0]);
-    res.locals.verifiedUser = verifiedUser.rows[0];
-    if (!verifiedUser.rows[0]) return res.status(400).send('User not found');
-    if (verifiedUser.rows[0].password === password) {
-      const userId = res.locals.verifiedUser.id; // using the res.locals saved property instead
-      console.log('userid: ', userId);
-      res.cookie('user_id', userId);
+    console.log('req body ', req.body);
+    if (username && password) {
+      const values = [username];
+      const queryText = `SELECT * FROM user_info WHERE username=$1`;
+      const verifiedUser = await db.query(queryText, values);
+
+      console.log('verified user data: ', verifiedUser.rows[0]);
+      res.locals.verifiedUser = verifiedUser.rows[0];
+
+      if (!verifiedUser.rows[0]) return res.status(400).send('User not found');
+      if (verifiedUser.rows[0].password === password) {
+        const userId = res.locals.verifiedUser.id; // using the res.locals saved property instead
+        console.log('userid: ', userId);
+        res.cookie('user_id', userId);
+        return next();
+      } else return res.status(200).send('Wrong password');
+    } else {
+      const userId = req.cookies.user_id;
+      const values = [userId];
+      const queryText = `SELECT * FROM user_info WHERE id=$1`;
+      const verifiedUser = await db.query(queryText, values);
+
+      console.log('verified user data: ', verifiedUser.rows[0]);
+      res.locals.verifiedUser = verifiedUser.rows[0];
+
       return next();
-    } else return res.status(200).send('Wrong password');
+    }
   } catch (err) {
     return next({
       log: 'Error in verifyUser, ' + err,
