@@ -6,11 +6,6 @@ const NavBar = () => {
   const [keyword, setKeyword] = useState('');
   const { searchPosts } = useContext(GlobalContext); 
 
-  let navigate = useNavigate();
-  const routeChange = () => {
-    let path = `/searched`;
-    navigate(path)
-  }
 
 
   const onSubmit = e => {
