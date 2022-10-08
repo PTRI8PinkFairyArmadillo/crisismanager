@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { GlobalContext } from '../context/GlobalState';
 import {Routes, Route, Link, useNavigate } from 'react-router-dom' ;
+import Logout from './Logout';
+import Username from './Username';
 
 const NavBar = () => {
   const [keyword, setKeyword] = useState('');
@@ -27,20 +29,32 @@ const NavBar = () => {
         <a class="navbar-brand" href="#">Crisis Manager</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-          <Link class="nav-link active" aria-current="page" to="/">Home</Link>
+            <Link class="nav-link active" aria-current="page" to="/">
+              Home
+            </Link>
           </li>
           <li class="nav-item">
-          <Link class="nav-link" to="/login">Log In</Link>
+            <Link class="nav-link" to="/login">
+              Log In
+            </Link>
           </li>
           <li class="nav-item">
-          <Link class="nav-link" to="/signup">Sign Up</Link>
+            <Link class="nav-link" to="/signup">
+              Sign Up
+            </Link>
           </li>
-      </ul>
+          <li class="nav-item">
+            <Link class="nav-link" to="/logout" onClick={(e) => Logout}>
+              Log out
+            </Link>
+          </li>
+        </ul>
 
+        <div class="m-2">{<Username />}</div>
 
 
       <form class="d-flex" role="search">

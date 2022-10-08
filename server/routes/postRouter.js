@@ -11,7 +11,7 @@ router.post('/search', postController.getSearchResult, (req, res) => {
 
 router.post(
   '/',
-  // userController.verifyUser,
+  userController.verifyUser,
   itemController.newItem,
   postController.newPost,
   (req, res) => {

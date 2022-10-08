@@ -12,10 +12,10 @@ controller.newPost = async (req, res, next) => {
     //use JWT to get user_id
     //maybe create a middleware to verify the user and get user_id
     // console.log(res.locals.verifiedUser);
-    
+
     // const userID = res.locals.verifiedUser.id;
     // console.log('User id: ', res.locals.verifiedUser.id);
-    const userID = 11;
+    const userID = res.locals.verifiedUser.id;
     const itemID = res.locals.newItem.id;
     const postValues = [
       currentDate,
@@ -125,7 +125,6 @@ controller.updatePost = async (req, res, next) => {
     });
   }
 };
-
 
 controller.deletePost = async (req, res, next) => {
   try {
