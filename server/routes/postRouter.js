@@ -5,9 +5,13 @@ const itemController = require('../controllers/itemController');
 
 const router = express.Router();
 
+router.post('/search', postController.getSearchResult, (req, res) => {
+  return res.status(200).json(res.locals.searchResult);
+});
+
 router.post(
   '/',
-  // userController.verifyUser,
+  userController.verifyUser,
   itemController.newItem,
   postController.newPost,
   (req, res) => {
@@ -15,9 +19,19 @@ router.post(
   }
 );
 
+router.post('/search', postController.getSearchResult, (req, res) => {
+  return res.status(200).json(res.locals.searchResult);
+});
+
 router.get('/', postController.getAllPosts, (req, res) => {
   return res.status(200).json(res.locals.allPosts);
 });
+
+
+router.put('/:id', postController.updatePost, (req, res) => {
+  res.status(200).send('Post updated');
+});
+
 
 router.delete('/:id', postController.deletePost, itemController.deleteItem, (req, res) => {
   return res.status(200).send('Post deleted');

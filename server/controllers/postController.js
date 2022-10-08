@@ -12,10 +12,10 @@ controller.newPost = async (req, res, next) => {
     //use JWT to get user_id
     //maybe create a middleware to verify the user and get user_id
     // console.log(res.locals.verifiedUser);
-    
+
     // const userID = res.locals.verifiedUser.id;
     // console.log('User id: ', res.locals.verifiedUser.id);
-    const userID = 11;
+    const userID = res.locals.verifiedUser.id;
     const itemID = res.locals.newItem.id;
     const postValues = [
       currentDate,
@@ -47,7 +47,8 @@ controller.getAllPosts = async (req, res, next) => {
     const queryText = `SELECT a.*, b.name, b.quantity, b.type, c.username 
                         FROM post_info as a 
                         LEFT JOIN item_info as b ON a.item_id = b.id 
-                        LEFT JOIN user_info as c ON a.user_id = c.id`;
+                        LEFT JOIN user_info as c ON a.user_id = c.id
+                        where claimed = false`;
 
     const allPosts = await db.query(queryText);
     res.locals.allPosts = allPosts.rows;
@@ -62,7 +63,33 @@ controller.getAllPosts = async (req, res, next) => {
     });
   }
 };
+//searh item by name
+controller.getSearchResult = async (req, res, next) => {
+  try {
+    // convert the searched term to lower case and wrap in mods % so that it finds all names that contain the searched term
+    console.log(req.body.keyword);
+    const searchTerm = [('%' + req.body.keyword.toLowerCase() + '%')];
+    const queryText = `SELECT a.*, b.name, b.quantity, b.type, c.username 
+                        FROM post_info as a 
+                        LEFT JOIN item_info as b ON a.item_id = b.id 
+                        LEFT JOIN user_info as c ON a.user_id = c.id
+                        where claimed = false
+                        and b.name ilike $1 `;
+    const searchResult = await db.query(queryText, searchTerm);
+    res.locals.searchResult = searchResult.rows;
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in postController.getSearchResult: ' + err,
+      status: 400,
+      message: {
+        err: 'An error occurred in getting postController.getSearchResult',
+      },
+    });
+  }
+};
 
+//searh item by ID
 controller.getPost = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -77,6 +104,24 @@ controller.getPost = async (req, res, next) => {
       log: 'Error in controller.deletePosteteUser: ' + err,
       status: 400,
       message: { err: 'Error in controller.deletePost' },
+    });
+  }
+};
+
+controller.updatePost = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const queryText = `UPDATE post_info SET claimed=true WHERE id=${id}`;
+    const updatedPost = await db.query(queryText);
+    if (updatedPost.rowCount === 0) {
+      return res.status(400).send('Post does not exist');
+    }
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in postController.updatePost: ' + err,
+      status: 400,
+      message: { err: 'Error in updating postController.updatePost' },
     });
   }
 };
