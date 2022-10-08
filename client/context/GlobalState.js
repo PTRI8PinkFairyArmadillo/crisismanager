@@ -18,8 +18,7 @@ export const GlobalProvider = ({ children }) => {
 
   async function getPosts() {
     try {
-      const res = await axios.get('/post');
-      console.log(res);
+      const res = await axios.get('/post')
       dispatch({
         type: 'GET_POSTS',
         payload: res.data,
@@ -31,6 +30,28 @@ export const GlobalProvider = ({ children }) => {
       });
     }
   }
+  
+  async function searchPosts(keyword) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    try {
+      console.log('searching');
+      const res = await axios.post('/post/search',keyword, config)
+      dispatch({
+        type: 'SEARCH_POSTS',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'POST_ERROR',
+        payload: err.response.data.error
+      })
+    }
+  }
+
 
   async function addPost(post) {
     const config = {
@@ -197,6 +218,7 @@ export const GlobalProvider = ({ children }) => {
         verifyUser,
         logoutUser,
         getUser,
+        searchPosts
       }}
     >
       {children}

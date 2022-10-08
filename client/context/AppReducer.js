@@ -8,8 +8,13 @@ export default (state, action) => {
     case 'GET_POSTS':
       return {
         ...state,
-        posts: action.payload,
-      };
+        posts: action.payload
+      }
+    case 'SEARCH_POSTS':
+      return {
+        ...state,
+        posts: action.payload
+      }
     case 'DELETE_POST':
       return {
         ...state,
