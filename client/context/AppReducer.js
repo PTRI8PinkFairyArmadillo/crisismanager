@@ -13,9 +13,14 @@ export default (state, action) => {
     case "DELETE_POST":
       return {
         ...state,
-        posts: state.posts.filter((post) => post.id !== action.payload),
-      };
-    case "POST_ERROR":
+        posts: state.posts.filter(post => post.id !== action.payload)
+      }
+    case 'UPDATE_POST':
+      return {
+        ...state,
+        // posts: action.payload
+      }
+    case 'POST_ERROR':
       return {
         ...state,
         error: action.payload,

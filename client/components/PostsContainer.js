@@ -5,6 +5,7 @@ import Footer from './Footer';
 import { GlobalContext } from '../context/GlobalState';
 import AddButton from './AddButton';
 import NewPost from './NewPost';
+import Title from './Title';
 
 
 const PostsContainer = () => {
@@ -32,11 +33,15 @@ const PostsContainer = () => {
     })
 
 return (
-  <div>
+  <div class="container px-4 px-lg-5">
+    <Title />
     <AddButton />
-    {postsList}
+    <div class="row gx-4 gx-lg-5">
+      {postsList}
+    </div>
     <Footer />
   </div>
+
 )};
 
 export default PostsContainer
