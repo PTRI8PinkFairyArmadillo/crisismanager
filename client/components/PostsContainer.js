@@ -35,11 +35,10 @@ const PostsContainer = () => {
 return (
   <div class="container px-4 px-lg-5">
     <Title />
-    <AddButton />
     <div class="row gx-4 gx-lg-5">
       {postsList}
     </div>
-    <Footer />
+    {/* <Footer /> */}
   </div>
 
 )};

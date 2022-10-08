@@ -9,14 +9,14 @@ const Post = (props) => {
     // <div>In the Post</div>
       <div class="col-md-4 mb-5" id={postID}>
         <div class="card-body">
-          <div class="card h-100">
-          <h2 class="card-title">Item Name: {name} </h2>
-          <p class="card-subtitle mb-2 text-muted">Location: {location}</p>
-          <p class="card-subtitle mb-2 text-muted">Event: {event}</p>       
-          <p class="card-subtitle mb-2 text-muted">Item Type: {type}</p>
-          <p class="card-subtitle mb-2 text-muted">Quantity: {quantity}</p>
-          <p class="card-subtitle mb-2 text-muted">Created By: {user}</p>
-          <p class="card-text">Description: {description}</p>
+          <div class="card h-100 pt-2">
+          <h2 class="card-title ps-1">Item Name: {name} </h2>
+          <p class="card-subtitle mb-2  ps-2 text-muted">Location: {location}</p>
+          {/* <p class="card-subtitle mb-2  ps-2 text-muted">Event: {event}</p>        */}
+          <p class="card-subtitle mb-2  ps-2 text-muted">Item Type: {type}</p>
+          <p class="card-subtitle mb-2  ps-2 text-muted">Quantity: {quantity}</p>
+          <p class="card-subtitle mb-2  ps-2 text-muted">Created By: {user}</p>
+          <p class="card-text  ps-1">Description: {description}</p>
           <div class="card-footer">
             <Link to="/" class="card-link" onClick={() => updatePost(postID)}>Claim</Link>
             <Link to="/" class="card-link" onClick={() => deletePost(postID)}>Delete</Link>

@@ -9,7 +9,7 @@ const Title = () => (
 <div class="col-lg-5">
     <h1 class="font-weight-light">Let's Help Our Friends</h1>
     <p>Do you have extra items laying around your house? Extra Food? Please share your items below. </p>
-    <Link to="/newpost" class="btn btn-primary" href="#!">Sharing is Caring</Link>
+    <Link to="/newpost" class="btn btn-primary" href="#!">Add Your CareShare</Link>
 </div>
 </div>
 <div class="card text-white bg-secondary my-5 py-4 text-center">

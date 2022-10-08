@@ -8,7 +8,8 @@ const NewPost = () => {
   const [type, setType] = useState('');
   const [quantity, setQuantity] = useState(0);
   const [description, setDescription] = useState('');
-  const [isDonation, setDonationStat] = useState(false);
+  // all posts are donation
+  // const [isDonation, setDonationStat] = useState(false);
 
   const { addPost } = useContext(GlobalContext);
 
@@ -31,9 +32,8 @@ const NewPost = () => {
       type,
       quantity,
       description,
-      donation: false
+      donation: true // keeping this in here, because database looks for this column. 
     }
-      console.log(newPost);
       
       addPost(newPost);
       routeChange();
@@ -66,13 +66,14 @@ const NewPost = () => {
         <textarea class="form-control" value={description} onChange={(e) => setDescription(e.target.value)} aria-label="description"></textarea>
       </div>
 
-      <div class="form-check">
+{/* was going to have two posts type: donation & requests. Ended up focusing just on collectiong donation posts */}
+      {/* <div class="form-check">
         <input type="hidden" name="donationCheckbox" value="false" />
         <input class="form-check-input" type="checkbox" value="true" id="flexCheckDefault" name="donationCheckbox"/>
         <label class="form-check-label" for="flexCheckDefault">
           Donation?
         </label>
-      </div>
+      </div> */}
 
       <div class="container col text-center">
         <button type="submit" class="btn btn-primary">
