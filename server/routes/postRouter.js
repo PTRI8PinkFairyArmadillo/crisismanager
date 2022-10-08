@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post(
   '/',
-  // userController.verifyUser,
+  userController.verifyUser,
   itemController.newItem,
   postController.newPost,
   (req, res) => {

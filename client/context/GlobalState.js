@@ -1,6 +1,6 @@
-import React, { createContext, useReducer } from "react";
-import AppReducer from "./AppReducer";
-import axios from "axios";
+import React, { createContext, useReducer } from 'react';
+import AppReducer from './AppReducer';
+import axios from 'axios';
 
 const initialState = {
   // posts: [
@@ -18,15 +18,15 @@ export const GlobalProvider = ({ children }) => {
 
   async function getPosts() {
     try {
-      const res = await axios.get("/post");
+      const res = await axios.get('/post');
       console.log(res);
       dispatch({
-        type: "GET_POSTS",
+        type: 'GET_POSTS',
         payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: "POST_ERROR",
+        type: 'POST_ERROR',
         payload: err.response.data.error,
       });
     }
@@ -35,20 +35,20 @@ export const GlobalProvider = ({ children }) => {
   async function addPost(post) {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
     try {
-      const res = await axios.post('/post', post, config)
-      getPosts() // useEffect is not properly working so manually run the getPosts() again
-      console.log(res)
+      const res = await axios.post('/post', post, config);
+      getPosts(); // useEffect is not properly working so manually run the getPosts() again
+      console.log(res);
       dispatch({
-        type: "ADD_POST",
+        type: 'ADD_POST',
         payload: res.data,
       });
     } catch (err) {
       dispatch({
-        type: "POST_ERROR",
+        type: 'POST_ERROR',
         payload: err.response.data.error,
       });
     }
@@ -56,15 +56,15 @@ export const GlobalProvider = ({ children }) => {
 
   async function deletePost(id) {
     try {
-      await axios.delete(`/post/${id}`)
+      await axios.delete(`/post/${id}`);
       getPosts(); // useEffect is not properly working so manually run the getPosts() again
       dispatch({
-        type: "DELETE_POSTS",
+        type: 'DELETE_POSTS',
         payload: id,
       });
     } catch (err) {
       dispatch({
-        type: "POST_ERROR",
+        type: 'POST_ERROR',
         payload: err.response.data.error,
       });
     }
@@ -73,23 +73,50 @@ export const GlobalProvider = ({ children }) => {
   async function verifyUser(userInput) {
     const config = {
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     };
     try {
       console.log('inside global state');
-      const res = await axios.post("/user/login", userInput, config);
+      const res = await axios.post('/user/login', userInput, config);
       console.log('response from login post in verifyUser - GlobalState', res);
       dispatch({
-        type: "VERIFY_USER",
+        type: 'VERIFY_USER',
+        payload: res.data,
+      });
+      if (res.data === 'Wrong password') return false;
+      return true;
+    } catch (err) {
+      console.log('caught error in global state ', err);
+      console.log('payload: ', err.response.data);
+      dispatch({
+        type: 'LOGIN_ERROR',
+        payload: err.response.data,
+      });
+      return false;
+    }
+  }
+
+  async function logoutUser(userInput) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      console.log('inside global state');
+      const res = await axios.post('/user/logout', userInput, config);
+      console.log('response from logout post in logoutUser - GlobalState', res);
+      dispatch({
+        type: 'LOGOUT_USER',
         payload: res.data,
       });
       return true;
     } catch (err) {
-      console.log('caught error in global state ', err)
-      console.log('payload: ', err.response.data)
+      console.log('caught error in global state ', err);
+      console.log('payload: ', err.response.data);
       dispatch({
-        type: "LOGIN_ERROR",
+        type: 'LOGOUT_ERROR',
         payload: err.response.data,
       });
       return false;
@@ -99,56 +126,80 @@ export const GlobalProvider = ({ children }) => {
   async function updatePost(id) {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+        'Content-Type': 'application/json',
+      },
+    };
     try {
-      const res = await axios.put(`/post/${id}`)
+      const res = await axios.put(`/post/${id}`);
       getPosts(); // useEffect is not properly working so manually run the getPosts() again
-      console.log(res)
+      console.log(res);
       dispatch({
         type: 'UPDATE_POST',
-        payload: res.data
-      })
+        payload: res.data,
+      });
     } catch (err) {
       dispatch({
         type: 'POST_ERROR',
-        payload: err.response.data.error
-      })
+        payload: err.response.data.error,
+      });
     }
   }
 
   async function addUser(user) {
     const config = {
       headers: {
-        'Content-Type': 'application/json'
-      }
-    }
+        'Content-Type': 'application/json',
+      },
+    };
     try {
-      const res = await axios.post('/user', user, config)
-      console.log(res)
+      const res = await axios.post('/user', user, config);
+      console.log(res);
       dispatch({
         type: 'ADD_USER',
-        payload: res.data
-      })
+        payload: res.data,
+      });
     } catch (err) {
       dispatch({
-      type: 'POST_ERROR',
-      payload: err.response.data.error
-      })
+        type: 'POST_ERROR',
+        payload: err.response.data.error,
+      });
     }
   }
 
-  return (<GlobalContext.Provider value={{
-    posts: state.posts,
-    addPost,
-    getPosts,
-    deletePost,
-    updatePost,
-    addUser,
-    verifyUser
-  }}>
-    {children}
-  </GlobalContext.Provider>);
-};
+  async function getUser(id) {
+    try {
+      if (id) {
+        const res = await axios.get(`/user/${id}`);
+        console.log('res', res);
+        dispatch({
+          type: 'GET_USER',
+          payload: res.data,
+        });
+        if (res.data.name) return res.data.name;
+      } else return false;
+    } catch (err) {
+      dispatch({
+        type: 'USER_ERROR',
+        payload: err.response.data.error,
+      });
+    }
+  }
 
+  return (
+    <GlobalContext.Provider
+      value={{
+        posts: state.posts,
+        addPost,
+        getPosts,
+        deletePost,
+        updatePost,
+        addUser,
+        verifyUser,
+        logoutUser,
+        getUser,
+      }}
+    >
+      {children}
+    </GlobalContext.Provider>
+  );
+};
