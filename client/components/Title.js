@@ -9,11 +9,11 @@ const Title = () => (
 <div class="col-lg-5">
     <h1 class="font-weight-light">Let's Help Our Friends</h1>
     <p>Do you have extra items laying around your house? Extra Food? Please share your items below. </p>
-    <Link to="/newpost" class="btn btn-primary" href="#!">Add Your CareShare</Link>
+    <Link to="/newpost" class="btn btn-primary fw-bold fs-4" href="#!">Add Your CareShare</Link>
 </div>
 </div>
 <div class="card text-white bg-secondary my-5 py-4 text-center">
-<div class="card-body"><p class="text-white m-0">If you are in need of any of the items below, click "Claim" to claim</p></div>
+<div class="card-body"><p class="text-white m-0 fs-5">If you are in need of any of the items below, click "Claim" to claim</p></div>
 </div>
 </div>)
 
