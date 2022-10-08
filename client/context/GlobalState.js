@@ -8,6 +8,7 @@ const initialState = {
   //   {name: 'coffee', location: 'nook\'s cranny', type:'food/beverage', quantity: 3, description: 'iced coffee'}
   // ]
   posts: [],
+  error: {},
 };
 
 export const GlobalContext = createContext(initialState);
@@ -76,18 +77,22 @@ export const GlobalProvider = ({ children }) => {
       },
     };
     try {
-      console.log('inside global state')
+      console.log('inside global state');
       const res = await axios.post("/user/login", userInput, config);
-      console.log(res);
+      console.log('response from login post in verifyUser - GlobalState', res);
       dispatch({
         type: "VERIFY_USER",
         payload: res.data,
       });
+      return true;
     } catch (err) {
+      console.log('caught error in global state ', err)
+      console.log('payload: ', err.response.data)
       dispatch({
         type: "LOGIN_ERROR",
-        payload: err.response.data.error,
+        payload: err.response.data,
       });
+      return false;
     }
   }
 

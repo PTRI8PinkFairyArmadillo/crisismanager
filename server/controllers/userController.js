@@ -88,9 +88,15 @@ controller.verifyUser = async (req, res, next) => {
     const values = [username];
     const queryText = `SELECT * FROM user_info WHERE username=$1`;
     const verifiedUser = await db.query(queryText, values);
+    console.log('verified user data: ', verifiedUser.rows[0]);
     res.locals.verifiedUser = verifiedUser.rows[0];
     if (!verifiedUser.rows[0]) return res.status(400).send('User not found');
-    if (verifiedUser.rows[0].password === password) return next();
+    if (verifiedUser.rows[0].password === password){
+      const userId = verifiedUser.rows[0].id;
+      console.log('userid: ', userId);
+      res.cookie('user_id',userId);
+      return next();
+    }
     else return res.status(200).send('Wrong password');
   } catch (err) {
     return next({

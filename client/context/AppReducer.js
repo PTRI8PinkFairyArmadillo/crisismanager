@@ -27,7 +27,7 @@ export default (state, action) => {
     case "LOGIN_ERROR":
       return {
         ...state,
-        error: action.payload,
+        error2: action.payload,
       };
     default:
       return state;

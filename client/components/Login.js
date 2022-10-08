@@ -1,21 +1,32 @@
 import React, { useState, useContext } from "react";
 import { GlobalContext } from "../context/GlobalState";
-
-
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { verifyUser } = useContext(GlobalContext);
+  const { verifyUser, error2 } = useContext(GlobalContext);
 
-  const onSubmit = (e) => {
+  let navigate = useNavigate();
+  const routeChange = () => {
+    let path = `/`;
+    navigate(path)
+  }
+
+  const onSubmit = async (e) => {
     e.preventDefault();
     const userInput = {
       username,
       password,
     }; 
-    console.log(userInput);
-    verifyUser(userInput);
+    console.log('This is the userInput ', userInput);
+    const verify = await verifyUser(userInput);
+    console.log('verify: ', verify);
+    // console.log('error2 from global state in login.js', error2)
+    if (verify) routeChange();
+    else {
+      alert("Wrong username or password");
+    }
   };
 
   return(

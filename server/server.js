@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const userRouter = require('./routes/userRouter');
 const postRouter = require('./routes/postRouter');
 const itemRouter = require('./routes/itemRouter');
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 app.use('/user', userRouter);
 app.use('/post', postRouter);
