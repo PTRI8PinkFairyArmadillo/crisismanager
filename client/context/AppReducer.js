@@ -10,6 +10,11 @@ export default (state, action) => {
         ...state,
         posts: action.payload
       }
+    case 'SEARCH_POSTS':
+      return {
+        ...state,
+        posts: action.payload
+      }
     case 'DELETE_POST':
       return {
         ...state,

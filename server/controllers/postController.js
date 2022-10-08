@@ -63,7 +63,33 @@ controller.getAllPosts = async (req, res, next) => {
     });
   }
 };
+//searh item by name
+controller.getSearchResult = async (req, res, next) => {
+  try {
+    // convert the searched term to lower case and wrap in mods % so that it finds all names that contain the searched term
+    console.log(req.body.keyword);
+    const searchTerm = [('%' + req.body.keyword.toLowerCase() + '%')];
+    const queryText = `SELECT a.*, b.name, b.quantity, b.type, c.username 
+                        FROM post_info as a 
+                        LEFT JOIN item_info as b ON a.item_id = b.id 
+                        LEFT JOIN user_info as c ON a.user_id = c.id
+                        where claimed = false
+                        and b.name ilike $1 `;
+    const searchResult = await db.query(queryText, searchTerm);
+    res.locals.searchResult = searchResult.rows;
+    return next();
+  } catch (err) {
+    return next({
+      log: 'Error in postController.getSearchResult: ' + err,
+      status: 400,
+      message: {
+        err: 'An error occurred in getting postController.getSearchResult',
+      },
+    });
+  }
+};
 
+//searh item by ID
 controller.getPost = async (req, res, next) => {
   try {
     const { id } = req.params;

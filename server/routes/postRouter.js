@@ -5,6 +5,10 @@ const itemController = require('../controllers/itemController');
 
 const router = express.Router();
 
+router.post('/search', postController.getSearchResult, (req, res) => {
+  return res.status(200).json(res.locals.searchResult);
+});
+
 router.post(
   '/',
   // userController.verifyUser,
@@ -15,9 +19,14 @@ router.post(
   }
 );
 
+router.post('/search', postController.getSearchResult, (req, res) => {
+  return res.status(200).json(res.locals.searchResult);
+});
+
 router.get('/', postController.getAllPosts, (req, res) => {
   return res.status(200).json(res.locals.allPosts);
 });
+
 
 router.put('/:id', postController.updatePost, (req, res) => {
   res.status(200).send('Post updated');

@@ -19,7 +19,6 @@ export const GlobalProvider = ({ children }) => {
   async function getPosts() {
     try {
       const res = await axios.get('/post')
-      console.log(res);
       dispatch({
         type: 'GET_POSTS',
         payload: res.data
@@ -32,6 +31,28 @@ export const GlobalProvider = ({ children }) => {
     }
   }
   
+  async function searchPosts(keyword) {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+    try {
+      console.log('searching');
+      const res = await axios.post('/post/search',keyword, config)
+      dispatch({
+        type: 'SEARCH_POSTS',
+        payload: res.data
+      })
+    } catch (err) {
+      dispatch({
+        type: 'POST_ERROR',
+        payload: err.response.data.error
+      })
+    }
+  }
+
+
   async function addPost(post) {
     const config = {
       headers: {
@@ -119,7 +140,8 @@ export const GlobalProvider = ({ children }) => {
     getPosts,
     deletePost,
     updatePost,
-    addUser
+    addUser,
+    searchPosts
   }}>
     {children}
   </GlobalContext.Provider>);
