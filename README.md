@@ -1,5 +1,9 @@
-# Crisis Management App
+# CareShare
 
-Authors: Christopher Kim, Risa Ochiai, Terry Park, Marco Xu
+> _previously known as Crisis Manager... (changed because the theme is just about giving now)_
 
-Test6
+**\*Authored by:** Terry Park, Risa Ochiai, Marco Xu, Chris Kim\*
+
+## Documentation
+
+...
