@@ -27,4 +27,13 @@ router.post('/login', userController.verifyUser, (req, res) => {
   res.status(200).send('User found');
 });
 
+// router.post(
+//   '/logout',
+//   userController.verifyUser,
+//   userController.logoutUser,
+//   (req, res) => {
+//     res.status(200).send('User logged out');
+//   }
+// );
+
 module.exports = router;
